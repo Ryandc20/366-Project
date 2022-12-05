@@ -1,8 +1,35 @@
-def play():
+def selection():
+    """
+
+    """
+    pass
+
+def expansion():
+    """
+
+    """
+    pass 
+
+def simulation():
+    """
+    Simulate games of hex based on current expansion state.
+    """
+    pass
+
+def mcts():
+    """
+
+    """
+    pass
+
+def backpropagation():
+    """
+    Updates probabilities
+    """
     pass
 
 def main():
     """
-    Play a basic test game to make sure the code if performing properly.
+    Play a game against user to test code.
     """
     pass
