@@ -65,3 +65,36 @@ class Union:
         union.ids = self.ids.copy()
         union.size = self.size.copy()
         return union
+
+class Tree:
+    """
+    Simple implementation of tree data structure for mcts.
+    """
+    def __init__(self, data):
+        """
+        data: contains data for root node 
+        """
+        self.data = data
+        self.children = []
+
+    def get_data(self):
+        return self.data
+
+    def add_child(self, data):
+        node = Tree(data)
+        self.children.append(node)
+
+    def get_children(self):
+        return self.children
+
+    def num_children(self):
+        return len(self.children)
+
+class Data:
+    """
+    A node that contains the data needed for each expanded node.
+    """
+    def __init__(self, board: Board, num, utility):
+        self.board = Board
+        self.n = num
+        self.util = utility

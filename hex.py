@@ -114,7 +114,7 @@ class Board:
         if(self.uni_0.joint(0,1)):
             return 1
         if(self.uni_1.joint(0,1)):
-            return -1
+            return 0
 
         # No one has one the game in this state
         return 0
