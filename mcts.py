@@ -8,7 +8,7 @@ class MCTS():
     """ 
     def __init__(self, board: Board):
         # Data of the root 
-        self.data = Data(board, 0, 0 )
+        self.data = Data(board, 0, 0)
         # Root of the mcts search tree 
         self.root = Tree(self.data)
         # Tuneable parameters 
@@ -40,6 +40,7 @@ class MCTS():
             if(val > best_val):
                 best = i
                 best_val = val
+
 
         return self.selection(children[best])
 
@@ -83,7 +84,7 @@ class MCTS():
 
             # Makes the move
             board.make_move(*move)
-            print(board)
+
 
         return board.checks_win()
 
@@ -131,20 +132,19 @@ def main():
     board = Board()
     while(board.checks_win() == -1):
         mcts = MCTS(board)
-        for i in range(1000):
+        for _ in range(500):
             mcts.search()
 
         # Get the move mcts selects 
-        move_id = mcts.get_move()
+        idx = mcts.get_move()
         moves = board.get_moves()
-        move = moves[move_id]
+        move = moves[idx]
         
         board.make_move(*move)
-        # while(1):
-            # i = int(input("Enter i the row: ")) 
-            # j = int(input("Enter j the col: "))
-            # if(board.make_move(i, j)):
-                # break
+
+        if(board.checks_win() != -1):
+            break
+
         moves = board.get_moves()
 
         # Get selection for random move
@@ -152,10 +152,9 @@ def main():
         move = moves[idx]
         board.make_move(*move)
 
-        if(board.checks_win() != -1):
-            break
         print(board)
 
+    print(board)
     print(board.checks_win())
 
 if __name__ == "__main__":

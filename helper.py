@@ -27,6 +27,7 @@ class Union:
 
         while(self.ids[item] != item):
             item = self.ids[item]
+            self.ids[item] = self.ids[self.ids[item]]
 
         # TODO Add path collapse
 

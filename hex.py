@@ -4,7 +4,7 @@ class Board:
     """
     Represents a hex board
     """
-    def __init__(self, size=7):
+    def __init__(self, size=9):
         """
         First: if mcts plays first
         """
@@ -37,7 +37,6 @@ class Board:
 
         # False represents player zero and true represents player one
         self.player = False
-        pass
     
     def get_moves(self):
         """
