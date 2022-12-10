@@ -4,7 +4,7 @@ class Board:
     """
     Represents a hex board
     """
-    def __init__(self, size=9):
+    def __init__(self, size= 11, first=True):
         """
         First: if mcts plays first
         """
@@ -37,6 +37,7 @@ class Board:
 
         # False represents player zero and true represents player one
         self.player = False
+        self.first = first
     
     def get_moves(self):
         """
@@ -119,10 +120,16 @@ class Board:
 
         # Checks win if both sides are connected by seing if they are in the
         # same set within the union data structure
-        if(self.player and self.uni_0.joint(0,1)):
-            return 1
-        if((not self.player) and self.uni_1.joint(0,1)):
-            return 0
+        if(self.uni_0.joint(0,1)):
+            if(self.first):
+                return 1
+            else:
+                return 0
+        if(self.uni_1.joint(0,1)):
+            if(self.first):
+                return 0
+            else:
+                return 1
 
         # No one has one the game in this state
         return -1
@@ -131,7 +138,7 @@ class Board:
         """
         Returns a deep copy of the board 
         """
-        board = Board(self.size)
+        board = Board(self.size, first=self.first)
         board.board = [row.copy() for row in self.board]
         board.player = self.player
         board.uni_0 = self.uni_0.copy()

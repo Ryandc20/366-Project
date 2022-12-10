@@ -6,13 +6,19 @@ class MCTS():
     """
     A implementation of UCT 
     """ 
-    def __init__(self, board: Board):
+    def __init__(self, board: Board, maximize=True):
+        """
+        board: hex game state 
+        maximize: to max or minimize game score added to allow MCTS vs MCTS
+        """
         # Data of the root 
         self.data = Data(board, 0, 0)
         # Root of the mcts search tree 
         self.root = Tree(self.data)
         # Tuneable parameters 
         self.c = 1
+        
+        self.maximize = maximize
 
 
     def selection(self, curr: Tree):
@@ -40,7 +46,6 @@ class MCTS():
             if(val > best_val):
                 best = i
                 best_val = val
-
 
         return self.selection(children[best])
 
@@ -85,8 +90,16 @@ class MCTS():
             # Makes the move
             board.make_move(*move)
 
+        win = board.checks_win()
 
-        return board.checks_win()
+        # Flip the scores
+        if(not self.maximize):
+            if(win == 1):
+                win = 0
+            else:
+                win = 1
+
+        return win 
 
     def backpropagation(self, node: Tree, val):
         """
@@ -122,17 +135,29 @@ class MCTS():
             if(util > best_util):
                 best_util = util 
                 best_move = i
-
+        
         return best_move
 
 def main():
     """
     Play a game against mcts.
     """
-    board = Board()
+    # Change the size of the board here 
+    board = Board(size = 7, first=False)
+
+    print(board)
     while(board.checks_win() == -1):
+        while(1):
+            i = int(input("Enter i row: "))
+            j = int(input("Enter j column: "))
+            if(board.make_move(i,j)):
+                break
+
+        if(board.checks_win() != -1):
+            break
+
         mcts = MCTS(board)
-        for _ in range(500):
+        for _ in range(1000):
             mcts.search()
 
         # Get the move mcts selects 
@@ -142,19 +167,7 @@ def main():
         
         board.make_move(*move)
 
-        if(board.checks_win() != -1):
-            break
-
-        moves = board.get_moves()
-
-        # Get selection for random move
-        idx = random.randint(0, len(moves) - 1)
-        move = moves[idx]
-        board.make_move(*move)
-
         print(board)
-
-    print(board)
     print(board.checks_win())
 
 if __name__ == "__main__":
