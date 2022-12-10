@@ -6,7 +6,7 @@ from mcts import MCTS
 from hex import Board
 
 # Define hyperparmets 
-n = 500
+n = 50
 iteration_1 = 500 
 iteration_2 = 250 
 
