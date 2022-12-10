@@ -9,7 +9,7 @@ from mcts import MCTS
 from hex import Board
 
 total = 0
-n = 10
+n = 20
 for i in range(n):
     board = Board(size = 9, first=False)
     while(board.checks_win() == -1):

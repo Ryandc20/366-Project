@@ -4,7 +4,7 @@ class Board:
     """
     Represents a hex board
     """
-    def __init__(self, size= 11, first=True):
+    def __init__(self, size=9, first=True):
         """
         First: if mcts plays first
         """
