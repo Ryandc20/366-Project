@@ -1,9 +1,8 @@
-# Test the coide against some games in order to try to evaluate performance of
-# the bot. 
-
+from mcts import MCTS
+from hex import Board
 
 def main():
-    pass
+    pass 
 
 if __name__ == "__main__":
     main()

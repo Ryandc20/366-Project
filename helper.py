@@ -37,6 +37,7 @@ class Union:
         """
         Unions two sets together.
         """
+        if(self.joint(a,b)): return
 
         # Get the roots of the nodes         
         root_a = self.root(a)
@@ -57,7 +58,6 @@ class Union:
         """
         Check if two elements are within the same sets returns true if so 
         """
-        
         return self.root(a) == self.root(b)
 
     def copy(self):
@@ -66,15 +66,20 @@ class Union:
         union.size = self.size.copy()
         return union
 
+
+
+
 class Tree:
     """
     Simple implementation of tree data structure for mcts.
+    With the ability to backtrack for backpropagation.
     """
     def __init__(self, data):
         """
         data: contains data for root node 
         """
         self.data = data
+        self.parent = None
         self.children = []
 
     def get_data(self):
@@ -82,6 +87,7 @@ class Tree:
 
     def add_child(self, data):
         node = Tree(data)
+        node.parent = self
         self.children.append(node)
 
     def get_children(self):
@@ -90,11 +96,14 @@ class Tree:
     def num_children(self):
         return len(self.children)
 
+    def get_parent(self):
+        return self.parent
+
 class Data:
     """
     A node that contains the data needed for each expanded node.
     """
-    def __init__(self, board: Board, num, utility):
-        self.board = Board
+    def __init__(self, board, num, utility):
+        self.board = board
         self.n = num
         self.util = utility

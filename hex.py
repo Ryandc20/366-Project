@@ -4,9 +4,12 @@ class Board:
     """
     Represents a hex board
     """
-    def __init__(self, size=11):
+    def __init__(self, size=7):
+        """
+        First: if mcts plays first
+        """
         self.board = [['_'] * size for _ in range(size)]
-        self.size = 11
+        self.size = size
 
         # Create union which tracks what pieces are together
         self.uni_0 = Union(size * size + 2)
@@ -77,26 +80,32 @@ class Board:
 
         # The neighbors of a non edge piece will be left right j - 1, j + 1
         if(j != 0 and self.board[i][j] == self.board[i][j-1]):
+            # print("<")
             idx1 = self.hash(i, j - 1)
             uni.union(idx, idx1)
 
         if(j != self.size-1 and self.board[i][j] == self.board[i][j+1]):
+            # print(">")
             idx1 = self.hash(i, j + 1)
             uni.union(idx, idx1)
 
         if(i != 0 and self.board[i][j] == self.board[i-1][j]):
+            # print("^")
             idx1 = self.hash(i - 1, j)
             uni.union(idx, idx1)
 
         if(i != self.size-1 and self.board[i][j] == self.board[i+1][j]):
+            # print("\\/")
             idx1 = self.hash(i + 1, j)
             uni.union(idx, idx1)
 
         if(i != 0 and j != self.size-1 and self.board[i][j] == self.board[i-1][j+1]):
+            # print("Top")
             idx1 = self.hash(i-1,j+1)
             uni.union(idx, idx1)
         
         if(i != self.size-1 and j != 0 and self.board[i][j] == self.board[i + 1][j - 1]):
+            # print("Bottom")
             idx1 = self.hash(i + 1, j - 1)
             uni.union(idx, idx1)
         
@@ -111,13 +120,13 @@ class Board:
 
         # Checks win if both sides are connected by seing if they are in the
         # same set within the union data structure
-        if(self.uni_0.joint(0,1)):
+        if(self.player and self.uni_0.joint(0,1)):
             return 1
-        if(self.uni_1.joint(0,1)):
+        if((not self.player) and self.uni_1.joint(0,1)):
             return 0
 
         # No one has one the game in this state
-        return 0
+        return -1
 
     def copy(self): 
         """
@@ -127,7 +136,7 @@ class Board:
         board.board = [row.copy() for row in self.board]
         board.player = self.player
         board.uni_0 = self.uni_0.copy()
-        board.uni_0 = self.uni_1.copy()
+        board.uni_1 = self.uni_1.copy()
         return board
     
     def hash(self, x, y):
@@ -144,25 +153,15 @@ class Board:
         """
         Overwrite the print functionality to display the board.
         """
-        string = ""
+        string = " "
+        for i in range(self.size):
+            string += str(i) + "   "
+        string += "\n"
         for i, row in enumerate(self.board):
+            string += str(i) + " "
             for cell in row:
                 string += cell + "   "
             string += "\n"
             string += "  " * (i + 1)
 
         return string
-
-# TODO remove just to check if the game is working properly
-def main():
-    board = Board()
-    print(board)
-    for i in range(11):
-        board.make_move(i,i//2)
-    print(board)
-    print(board.checks_win())
-
-    board=Board()
-
-if __name__ == "__main__":
-    main()
